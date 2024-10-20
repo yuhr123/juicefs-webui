@@ -32,7 +32,7 @@ def home():
     try:
         juicefs_version = subprocess.check_output(['./juicefs', '--version']).decode('utf-8').strip()
     except subprocess.CalledProcessError:
-        juicefs_version = "无法获取版本号"
+        juicefs_version = "Unable to get version number"
     
     return render_template('home.html', config=config, os_type=os_type, juicefs_version=juicefs_version)
 
@@ -48,9 +48,9 @@ def delete_config(name):
             with open('config.yaml', 'w') as file:
                 yaml.dump(config, file)
         
-        flash('配置已删除', 'success')
+        flash('Configuration deleted', 'success')
     else:
-        flash('删除操作已取消', 'info')
+        flash('Delete operation canceled', 'info')
     
     return redirect(url_for('home'))
 
@@ -96,12 +96,12 @@ def edit_config(name):
             }
         }
         
-        # 更新配置
+        # Update configuration
         config.update(updated_config)
         with open('config.yaml', 'w') as file:
             yaml.dump(config, file)
         
-        flash('配置已更新', 'success')
+        flash('Configuration updated', 'success')
         return redirect(url_for('view_config', name=form.name.data))
     
     return render_template('edit_config.html', form=form)
@@ -114,7 +114,7 @@ def get_juicefs_status(metaUrl):
         else:
             status_info = res.stdout
     except subprocess.TimeoutExpired:
-        status_info = "获取文件系统状态超时"
+        status_info = "Getting file system status timed out"
 
     return status_info
 
@@ -135,9 +135,9 @@ def create_filesystem():
         try:
             res = subprocess.run(command, capture_output=True, text=True, timeout=30)
             if res.returncode == 0:
-                flash('文件系统创建成功', 'success')
+                flash('File system created successfully', 'success')
 
-                # 保存配置信息到 config.yaml
+                # Save configuration to config.yaml
                 with open('config.yaml', 'r') as file:
                     config = yaml.safe_load(file)
                 
@@ -154,15 +154,15 @@ def create_filesystem():
 
                 config.update(new_config)
 
-                with open('new_config.yaml', 'w') as file:
+                with open('config.yaml', 'w') as file:
                     yaml.dump(config, file)
 
                 return redirect(url_for('view_config', name=form.name.data))
             else:
-                error_message = f'文件系统创建失败: {res.stderr}'
+                error_message = f'File system creation failed: {res.stderr}'
                 return render_template('new_config.html', form=form, error=error_message)
         except subprocess.TimeoutExpired:
-            error_message = '文件系统创建超时'
+            error_message = 'File system creation timed out'
             return render_template('new_config.html', form=form, error=error_message)
     
     return render_template('new_config.html', form=form)
