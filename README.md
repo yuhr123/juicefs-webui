@@ -37,10 +37,10 @@ python app.py
 - [x] Call the juicefs client in the current directory and display the version number
 - [x] Display the status information of the file system
 - [x] Format the file system (currently only supports s3)
-- [] Validate the file system
-- [] Automatically download the client suitable for the current system
-- [] One-click copy mount command
-- [] Form validation
-- [] Logic for interacting with the client when editing the configuration
-- [] Optimize UI
+- [ ] Validate the file system
+- [ ] Automatically download the client suitable for the current system
+- [ ] One-click copy mount command
+- [ ] Form validation
+- [ ] Logic for interacting with the client when editing the configuration
+- [ ] Optimize UI
 
